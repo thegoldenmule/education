@@ -1,0 +1,285 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb,xcolor,listings}
+\usepackage[utf8]{inputenc}
+\usepackage[colorlinks]{hyperref}
+\title{Javascript in 7 Minutes: A Guide for 2023}
+\author{thegoldenmule}
+\begin{document}\maketitle\tableofcontents
+
+\lstdefinelanguage{JavaScript}{
+  keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break, const, let},
+  keywordstyle=\color{blue}\bfseries,
+  ndkeywords={class, export, boolean, throw, implements, import, this},
+  ndkeywordstyle=\color{darkgray}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{purple}\ttfamily,
+  stringstyle=\color{red}\ttfamily,
+  morestring=[b]',
+  morestring=[b]"
+}
+
+\lstset{
+   language=JavaScript,
+   backgroundcolor=\color{lightgray},
+   extendedchars=true,
+   basicstyle=\footnotesize\ttfamily,
+   showstringspaces=false,
+   showspaces=false,
+   tabsize=2,
+   breaklines=true,
+   showtabs=false,
+   captionpos=b
+}
+
+\newpage
+\section{Introductory Laments}
+
+This shouldn't need to exist yet here I am, writing it. Please lament with me. This guide is purely pragmatic. It is not entirely accurate, and in the future, much like learning anything, you may need to unlearn a bit. It is intended for students that have an assignment due fifteen minutes from now but forgot to learn Javascript. Perhaps you, dear reader, are in class \textit{right now} and you're trying to catch up on something you saw on the board.
+\\
+\\
+Have no fear, you'll be productive in seven minutes, assignment done in fourteen.
+
+\section{Quick Facts}
+
+Quickly now, Javascript:\\
+
+\begin{itemize}
+	\item ...runs on a \textit{javascript runtime}, which may compile to bytecode, machine code, or run as a simple interpreter. The runtime usually runs in a browser or on a server, but plenty of runtimes are put other places.
+	\item ...is \textit{weakly} typed, meaning the language tries to automatically coerce types into other types instead of just failing.
+	\item ...is also \textit{dynamically} typed, meaning type information is determined while it's running, and heck, you can even change types midway through.
+	\item ...has \textit{historical issues} to watch out for, but is generally safe and fun to use in modern form.
+\end{itemize}
+
+\section{Variables}
+
+Variables in Javascript are written differently depending on whether or not they are \textbf{mutable}, i.e. whether or not they can be changed. Get in the habit of always starting with variables that are \textbf{immutable}, or don't change.
+\\
+\begin{lstlisting}
+// define an immutable (unchangeable) variable
+const myVariable = 5;
+
+// define a mutable (changeable) variable
+let myMut = "hello";
+\end{lstlisting}
+
+Never, God help you, under any circumstances define variables in these ways:
+
+\begin{lstlisting}
+foo = 5;
+
+var bar = 6;
+\end{lstlisting}
+
+\section{Types}
+
+As stated before, Javascript is weakly typed. This means that the runtime will try to \textit{coerce} types for you automatically. In many languages, these examples will fail to compile, but in Javascript they may give completely nonsensical results:
+
+\begin{lstlisting}
+const sum = 3 + "4";			// "34"
+const wat = [] + 1;			// "1"
+\end{lstlisting}
+
+\noindent
+\\
+In addition, the equality operator, \textbf{==}, is very hard to use.
+
+\begin{lstlisting}
+true == "true";		// false
+3 == "3";			// true
+undefined == null; 	// true
+\end{lstlisting}
+
+\noindent
+\\
+In general, just don't use $==$ at all! Instead, use "strict equality", $===$, which usually matches expectations much better.
+
+\begin{lstlisting}
+true === "true";			// false
+3 ===  "3";			// false
+undefined === null; 		// false
+\end{lstlisting}
+
+\noindent
+\\
+Types fall in two categories: \textbf{primitives} or \textbf{objects}. There are \href{https://developer.mozilla.org/en-US/docs/Web/JavaScript/Language_overview#data_types}{seven primitives}, but here are the ones you should know how to use right now:
+\begin{lstlisting}
+// number (there are no integers or fixed points, only floats)
+const num = 5.4;
+
+// strings (there are no chars -- strings only)
+const str = "I am a string";
+
+// boolean
+const bool = true; // or false, obviously
+
+// undefined
+let bar = undefined;
+
+// null
+let fizz = null;
+\end{lstlisting}
+
+\noindent
+Note that the \textbf{null} and \textbf{undefined} data types are not the same. Variables that have been declared but not initialized are undefined.
+
+\begin{lstlisting}
+
+let a;
+
+// a === undefined
+
+a = 4;
+
+// a === 4
+
+\end{lstlisting}
+
+\noindent
+\\
+Everything that is not a primitive is an \textbf{Object}, including \textbf{Function} and \textbf{Array}.
+
+\section{Objects}
+
+A Javascript \textbf{Object} is very similar to an associative array, map, or dictionary in other languages. Any type can act as a key.
+
+\begin{lstlisting}
+const myObject = {
+	counter: 0,
+	foo: () => console.log("foo"),
+	5: 6,
+	"fizz": "buzz",
+};
+\end{lstlisting}
+
+\noindent
+\\
+Note that, while the \textit{myObject} reference is const, the object itself can be manipulated.
+
+\begin{lstlisting}
+// perfectly legal
+myObject.bar = true;
+
+// throws error
+myObject = {};
+\end{lstlisting}
+
+\noindent
+\\
+Furthermore, we can access things in an object in multiple ways:
+
+\begin{lstlisting}
+myObject.counter; // 0
+
+myObject["counter"]; // 0
+
+const key = "counter";
+myObject[key]; // 0
+\end{lstlisting}
+
+\section{Functions}
+
+A mathematical function usually looks something like this:
+\\
+\begin{equation}
+\textbf{f}(x):\mathbb{R}\rightarrow\mathbb{R}
+\end{equation}
+\\
+This defines the function, called \textbf{f}, that takes a real number ($\mathbb{R}$), called x, and returns a real number. (1) is a \textit{different function} than this one:
+\\
+\begin{equation}
+\textbf{g}(x):\mathbb{R}\rightarrow\mathbb{N}
+\end{equation}
+\\
+Not just because the name is different, but because this one returns a natural number ($\mathbb{N}$).
+\\
+In Javascript, functions are written like this:
+\\
+\begin{lstlisting}
+const sum = (a, b) => {
+	return a + b;
+};
+\end{lstlisting}
+
+\noindent
+\\
+This defines the function \textbf{sum} that takes two parameters, \textbf{a} and \textbf{b}, and returns their sum. The block ({}) can be removed if the function is a single line long.
+\\
+\begin{lstlisting}
+const sum = (a, b) => a + b;
+\end{lstlisting}
+\noindent
+\\
+Since Functions are just objects, they may have methods on them, and they can be passed around just like anything else.
+\\
+\begin{lstlisting}
+const foo = () => 3;
+const bar = () => 4;
+
+const c = (a, b) => a() + b();
+\end{lstlisting}
+
+\section{Arrays}
+
+In Javascript, arrays are implemented like \textbf{doubly linked lists}. You can insert in front, push onto the end, pop things off, pull things out of the middle, and change the length dynamically. This means that Javascript Arrays can also be queues, stacks, and more.
+
+\begin{lstlisting}
+// create an array
+const arr = [];
+
+console.log(arr.length); // 0
+
+arr.push(1); // [1]
+
+arr.splice(0, 0, "start"); // ["start", 1]
+
+arr.splice(0, 1);	// [1]
+
+// this creates a new array
+const newArr = arr.concat([2, 3]);	// [1, 2, 3]
+
+\end{lstlisting}
+
+\noindent
+\\
+Arrays have many useful, powerful methods on them that can be used to do things quickly.
+
+\begin{lstlisting}
+// iterate
+[1, 2, 3].forEach(i => console.log(i));
+
+// transform
+[1, 2, 3].map(i => i + 1); // [2, 3, 4]
+
+// conditions
+[1, 2, 3].every(i => i > 2); // false
+[1, 2, 3].some(i => i > 2); // true
+
+// flatten
+[1, [2, 3, [4, 5]]].flat(Infinity); // [1, 2, 3, 4, 5]
+\end{lstlisting}
+
+\section{Classes}
+
+Classes don't exist. Not like you want them to.
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
