@@ -2,8 +2,9 @@
 \usepackage{amsmath,amssymb,xcolor,listings}
 \usepackage[utf8]{inputenc}
 \usepackage[colorlinks]{hyperref}
-\title{Javascript in 7 Minutes: A Guide for 2023}
+\title{Javascript in 7 Minutes: A Guide for 2024}
 \author{thegoldenmule}
+\frenchspacing
 \begin{document}\maketitle\tableofcontents
 
 \lstdefinelanguage{JavaScript}{
@@ -40,7 +41,7 @@
 This shouldn't need to exist yet here I am, writing it. Please lament with me. This guide is purely pragmatic. It is not entirely accurate, and in the future, much like learning anything, you may need to unlearn a bit. It is intended for students that have an assignment due fifteen minutes from now but forgot to learn Javascript. Perhaps you, dear reader, are in class \textit{right now} and you're trying to catch up on something you saw on the board.
 \\
 \\
-Have no fear, you'll be productive in seven minutes, assignment done in fourteen.
+Have no fear, you'll be productive in seven minutes. Assignment done in fourteen.
 
 \section{Quick Facts}
 
@@ -48,9 +49,10 @@ Quickly now, Javascript:\\
 
 \begin{itemize}
 	\item ...runs on a \textit{javascript runtime}, which may compile to bytecode, machine code, or run as a simple interpreter. The runtime usually runs in a browser or on a server, but plenty of runtimes are put other places.
-	\item ...is \textit{weakly} typed, meaning the language tries to automatically coerce types into other types instead of just failing.
+	\item ...is \textit{weakly} typed, meaning the language tries to automatically coerce types into other types instead of just failing (eg - it tries to make strings into ints for you).
 	\item ...is also \textit{dynamically} typed, meaning type information is determined while it's running, and heck, you can even change types midway through.
 	\item ...has \textit{historical issues} to watch out for, but is generally safe and fun to use in modern form.
+	\item ...when you need documentation, go straight to the MDN (Mozilla Developer Network) docs. There is no better reference.
 \end{itemize}
 
 \section{Variables}
@@ -65,13 +67,19 @@ const myVariable = 5;
 let myMut = "hello";
 \end{lstlisting}
 
+\noindent
+\\
 Never, God help you, under any circumstances define variables in these ways:
-
+\\
 \begin{lstlisting}
 foo = 5;
 
 var bar = 6;
 \end{lstlisting}
+
+\noindent
+\\
+These are syntactically correct, but can easily create global variables (which, as we all know, are almost-categorically bad).
 
 \section{Types}
 
@@ -195,6 +203,7 @@ This defines the function, called \textbf{f}, that takes a real number ($\mathbb
 \\
 Not just because the name is different, but because this one returns a natural number ($\mathbb{N}$).
 \\
+\\
 In Javascript, functions are written like this:
 \\
 \begin{lstlisting}
@@ -205,25 +214,37 @@ const sum = (a, b) => {
 
 \noindent
 \\
-This defines the function \textbf{sum} that takes two parameters, \textbf{a} and \textbf{b}, and returns their sum. The block ({}) can be removed if the function is a single line long.
+This defines the function \textbf{sum} that takes two parameters, \textbf{a} and \textbf{b}, and returns their sum. The block \{\} and \textbf{return} statement can be removed if the function is a single line long.
 \\
 \begin{lstlisting}
 const sum = (a, b) => a + b;
 \end{lstlisting}
 \noindent
 \\
-Since Functions are just objects, they may have methods on them, and they can be passed around just like anything else.
+Since Functions are just objects, they too act like associative arrays, and can be passed around just like anything else.
 \\
 \begin{lstlisting}
 const foo = () => 3;
+foo.wat = "bar";
+
 const bar = () => 4;
 
+// this is absurd, but valid
+bar[foo] = "no";
+
+// functions can be passed as arguments
 const c = (a, b) => a() + b();
+c(foo, bar);
 \end{lstlisting}
 
 \section{Arrays}
 
-In Javascript, arrays are implemented like \textbf{doubly linked lists}. You can insert in front, push onto the end, pop things off, pull things out of the middle, and change the length dynamically. This means that Javascript Arrays can also be queues, stacks, and more.
+In Javascript, arrays are implemented like \textbf{doubly linked lists}. Remember those? You can insert in front, push onto the end, pop things off, pull things out of the middle, and change the length dynamically. This means that Javascript Arrays can also be queues, stacks, and more.
+
+\noindent
+\\
+Arrays are usually created using an "array literal", which looks like [ ], with zero or more items inside.
+\\
 
 \begin{lstlisting}
 // create an array
@@ -263,7 +284,28 @@ Arrays have many useful, powerful methods on them that can be used to do things 
 
 \section{Classes}
 
-Classes don't exist. Not like you want them to.
+Javascript is \textbf{not} a classical language. This does not mean that javascript cannot play violin, it means that it doesn't have "classical inheritance". C++, C\#, Java -- these languages encourage you to define "classes" and then create "instances" of classes. Classes are the means to share functionality or shape.
+
+\begin{lstlisting}
+
+// C# Example
+class MyClass {
+	public int Foo;
+}
+
+...
+
+// now create an instance
+MyClass instance = new MyClass();
+\end{lstlisting}
+
+\noindent
+\\
+Javascript does not work the same way. While the \textbf{new} operator does exist (as does \textbf{class}), it doesn't work the same way. Javascript uses "prototypal inheritance", which is fundamentally different and generally considered "trickier". This guide does not describe Javascript classes, other than to avoid their use entirely.
+
+\section{Conclusion}
+
+The seven minute hourglass is almost empty, and here we are. You should now know Javascript as well as 90\% of professional Javascript developers. GLHF.
 
 \end{document}
 
