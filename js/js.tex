@@ -1,39 +1,13 @@
 \documentclass{article}
-\usepackage{amsmath,amssymb,xcolor,listings}
+\usepackage{amsmath,amssymb,xcolor}
 \usepackage[utf8]{inputenc}
 \usepackage[colorlinks]{hyperref}
+\usepackage{minted}
+
 \title{Javascript in 7 Minutes: A Guide for 2024}
 \author{thegoldenmule}
 \frenchspacing
 \begin{document}\maketitle\tableofcontents
-
-\lstdefinelanguage{JavaScript}{
-  keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break, const, let},
-  keywordstyle=\color{blue}\bfseries,
-  ndkeywords={class, export, boolean, throw, implements, import, this},
-  ndkeywordstyle=\color{darkgray}\bfseries,
-  identifierstyle=\color{black},
-  sensitive=false,
-  comment=[l]{//},
-  morecomment=[s]{/*}{*/},
-  commentstyle=\color{purple}\ttfamily,
-  stringstyle=\color{red}\ttfamily,
-  morestring=[b]',
-  morestring=[b]"
-}
-
-\lstset{
-   language=JavaScript,
-   backgroundcolor=\color{lightgray},
-   extendedchars=true,
-   basicstyle=\footnotesize\ttfamily,
-   showstringspaces=false,
-   showspaces=false,
-   tabsize=2,
-   breaklines=true,
-   showtabs=false,
-   captionpos=b
-}
 
 \newpage
 \section{Introductory Laments}
@@ -52,30 +26,30 @@ Quickly now, Javascript:\\
 	\item ...is \textit{weakly} typed, meaning the language tries to automatically coerce types into other types instead of just failing (eg - it tries to make strings into ints for you).
 	\item ...is also \textit{dynamically} typed, meaning type information is determined while it's running, and heck, you can even change types midway through.
 	\item ...has \textit{historical issues} to watch out for, but is generally safe and fun to use in modern form.
-	\item ...when you need documentation, go straight to the MDN (Mozilla Developer Network) docs. There is no better reference.
+	\item ...has great documentation on MDN (Mozilla Developer Network). There is no better reference.
 \end{itemize}
 
 \section{Variables}
 
 Variables in Javascript are written differently depending on whether or not they are \textbf{mutable}, i.e. whether or not they can be changed. Get in the habit of always starting with variables that are \textbf{immutable}, or don't change.
 \\
-\begin{lstlisting}
+\begin{minted}{javascript}
 // define an immutable (unchangeable) variable
 const myVariable = 5;
 
 // define a mutable (changeable) variable
 let myMut = "hello";
-\end{lstlisting}
+\end{minted}
 
 \noindent
 \\
 Never, God help you, under any circumstances define variables in these ways:
 \\
-\begin{lstlisting}
+\begin{minted}{javascript}
 foo = 5;
 
 var bar = 6;
-\end{lstlisting}
+\end{minted}
 
 \noindent
 \\
@@ -85,35 +59,35 @@ These are syntactically correct, but can easily create global variables (which, 
 
 As stated before, Javascript is weakly typed. This means that the runtime will try to \textit{coerce} types for you automatically. In many languages, these examples will fail to compile, but in Javascript they may give completely nonsensical results:
 
-\begin{lstlisting}
-const sum = 3 + "4";			// "34"
-const wat = [] + 1;			// "1"
-\end{lstlisting}
+\begin{minted}{javascript}
+const sum = 3 + "4"; // "34"
+const wat = [] + 1; // "1"
+\end{minted}
 
 \noindent
 \\
 In addition, the equality operator, \textbf{==}, is very hard to use.
 
-\begin{lstlisting}
-true == "true";		// false
-3 == "3";			// true
-undefined == null; 	// true
-\end{lstlisting}
+\begin{minted}{javascript}
+true == "true"; // false
+3 == "3"; // true
+undefined == null; // true
+\end{minted}
 
 \noindent
 \\
 In general, just don't use $==$ at all! Instead, use "strict equality", $===$, which usually matches expectations much better.
 
-\begin{lstlisting}
-true === "true";			// false
-3 ===  "3";			// false
-undefined === null; 		// false
-\end{lstlisting}
+\begin{minted}{javascript}
+true === "true"; // false
+3 ===  "3"; // false
+undefined === null; // false
+\end{minted}
 
 \noindent
 \\
 Types fall in two categories: \textbf{primitives} or \textbf{objects}. There are \href{https://developer.mozilla.org/en-US/docs/Web/JavaScript/Language_overview#data_types}{seven primitives}, but here are the ones you should know how to use right now:
-\begin{lstlisting}
+\begin{minted}{javascript}
 // number (there are no integers or fixed points, only floats)
 const num = 5.4;
 
@@ -128,12 +102,12 @@ let bar = undefined;
 
 // null
 let fizz = null;
-\end{lstlisting}
+\end{minted}
 
 \noindent
 Note that the \textbf{null} and \textbf{undefined} data types are not the same. Variables that have been declared but not initialized are undefined.
 
-\begin{lstlisting}
+\begin{minted}{javascript}
 
 let a;
 
@@ -143,7 +117,7 @@ a = 4;
 
 // a === 4
 
-\end{lstlisting}
+\end{minted}
 
 \noindent
 \\
@@ -153,39 +127,39 @@ Everything that is not a primitive is an \textbf{Object}, including \textbf{Func
 
 A Javascript \textbf{Object} is very similar to an associative array, map, or dictionary in other languages. Any type can act as a key.
 
-\begin{lstlisting}
+\begin{minted}{javascript}
 const myObject = {
 	counter: 0,
 	foo: () => console.log("foo"),
 	5: 6,
 	"fizz": "buzz",
 };
-\end{lstlisting}
+\end{minted}
 
 \noindent
 \\
 Note that, while the \textit{myObject} reference is const, the object itself can be manipulated.
 
-\begin{lstlisting}
+\begin{minted}{javascript}
 // perfectly legal
 myObject.bar = true;
 
 // throws error
 myObject = {};
-\end{lstlisting}
+\end{minted}
 
 \noindent
 \\
 Furthermore, we can access things in an object in multiple ways:
 
-\begin{lstlisting}
+\begin{minted}{javascript}
 myObject.counter; // 0
 
 myObject["counter"]; // 0
 
 const key = "counter";
 myObject[key]; // 0
-\end{lstlisting}
+\end{minted}
 
 \section{Functions}
 
@@ -206,24 +180,24 @@ Not just because the name is different, but because this one returns a natural n
 \\
 In Javascript, functions are written like this:
 \\
-\begin{lstlisting}
+\begin{minted}{javascript}
 const sum = (a, b) => {
 	return a + b;
 };
-\end{lstlisting}
+\end{minted}
 
 \noindent
 \\
 This defines the function \textbf{sum} that takes two parameters, \textbf{a} and \textbf{b}, and returns their sum. The block \{\} and \textbf{return} statement can be removed if the function is a single line long.
 \\
-\begin{lstlisting}
+\begin{minted}{javascript}
 const sum = (a, b) => a + b;
-\end{lstlisting}
+\end{minted}
 \noindent
 \\
 Since Functions are just objects, they too act like associative arrays, and can be passed around just like anything else.
 \\
-\begin{lstlisting}
+\begin{minted}{javascript}
 const foo = () => 3;
 foo.wat = "bar";
 
@@ -235,7 +209,7 @@ bar[foo] = "no";
 // functions can be passed as arguments
 const c = (a, b) => a() + b();
 c(foo, bar);
-\end{lstlisting}
+\end{minted}
 
 \section{Arrays}
 
@@ -246,7 +220,7 @@ In Javascript, arrays are implemented like \textbf{doubly linked lists}. Remembe
 Arrays are usually created using an "array literal", which looks like [ ], with zero or more items inside.
 \\
 
-\begin{lstlisting}
+\begin{minted}{javascript}
 // create an array
 const arr = [];
 
@@ -256,18 +230,18 @@ arr.push(1); // [1]
 
 arr.splice(0, 0, "start"); // ["start", 1]
 
-arr.splice(0, 1);	// [1]
+arr.splice(0, 1); // [1]
 
 // this creates a new array
-const newArr = arr.concat([2, 3]);	// [1, 2, 3]
+const newArr = arr.concat([2, 3]); // [1, 2, 3]
 
-\end{lstlisting}
+\end{minted}
 
 \noindent
 \\
 Arrays have many useful, powerful methods on them that can be used to do things quickly.
 
-\begin{lstlisting}
+\begin{minted}{javascript}
 // iterate
 [1, 2, 3].forEach(i => console.log(i));
 
@@ -280,13 +254,13 @@ Arrays have many useful, powerful methods on them that can be used to do things 
 
 // flatten
 [1, [2, 3, [4, 5]]].flat(Infinity); // [1, 2, 3, 4, 5]
-\end{lstlisting}
+\end{minted}
 
 \section{Classes}
 
 Javascript is \textbf{not} a classical language. This does not mean that javascript cannot play violin, it means that it doesn't have "classical inheritance". C++, C\#, Java -- these languages encourage you to define "classes" and then create "instances" of classes. Classes are the means to share functionality or shape.
 
-\begin{lstlisting}
+\begin{minted}{javascript}
 
 // C# Example
 class MyClass {
@@ -297,7 +271,7 @@ class MyClass {
 
 // now create an instance
 MyClass instance = new MyClass();
-\end{lstlisting}
+\end{minted}
 
 \noindent
 \\
